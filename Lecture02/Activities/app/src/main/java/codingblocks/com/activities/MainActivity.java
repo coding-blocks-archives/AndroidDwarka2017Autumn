@@ -19,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (savedInstanceState!=null && savedInstanceState.containsKey("COUNT")){
+            count = savedInstanceState.getInt("COUNT");
+        }
         Log.d(TAG, "onCreate: ");
         textView1 = (TextView) findViewById(R.id.textView);
         editText = (EditText) findViewById(R.id.editText2);
@@ -38,5 +41,11 @@ public class MainActivity extends AppCompatActivity {
 //        String etContent = editText.getText().toString();
 //        textView1.append(etContent);
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("COUNT",count);
     }
 }
