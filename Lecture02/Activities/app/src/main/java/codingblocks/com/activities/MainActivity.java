@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,15 +22,21 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: ");
         textView1 = (TextView) findViewById(R.id.textView);
         editText = (EditText) findViewById(R.id.editText2);
-
     }
 
     public void incrementCount(View view) {
-//        count++;
-//        Log.d(TAG, "incrementCount: was called " + count + " times");
-//        textView1.setText("The value of Counter is " + count);
-        String etContent = editText.getText().toString();
-        textView1.setText(etContent);
+        count++;
+        Log.d(TAG, "incrementCount: was called " + count + " times");
+        textView1.setText(String.valueOf(count));
+
+        Toast.makeText(this,"The current value of count is " + count,Toast.LENGTH_SHORT).show();
+
+//        Button b = (Button) view;
+//
+//        b.getText();
+//
+//        String etContent = editText.getText().toString();
+//        textView1.append(etContent);
 
     }
 }
