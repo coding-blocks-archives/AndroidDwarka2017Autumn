@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements MyInterface {
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container,
-                        new StudentFragment(students.get(0)))
+                        new StudentFragment())
                 .commit();
 
     }
@@ -37,7 +37,17 @@ public class MainActivity extends AppCompatActivity implements MyInterface {
 
         Student currentStudent = students.get(position);
 
-        StudentFragment studentFragment = new StudentFragment(currentStudent);
+//        StudentFragment studentFragment = new StudentFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("NAME",currentStudent.getName());
+        bundle.putString("NUMBER",currentStudent.getNumber());
+        bundle.putString("COURSE",currentStudent.getCourse());
+
+        StudentFragment studentFragment = StudentFragment.newInstance(bundle);
+
+        studentFragment.setArguments(bundle);
+        Bundle b = new Bundle();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, studentFragment)

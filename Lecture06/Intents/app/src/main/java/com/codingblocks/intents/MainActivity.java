@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void
+            onClick(View view) {
                 String s = editText.getText().toString();
                 Intent intent = new Intent(MainActivity.this, NewActivity.class);
                 intent.putExtra("NAME",s);
