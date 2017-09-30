@@ -14,8 +14,11 @@ public class MainActivity extends AppCompatActivity {
 //        Intent intent = new Intent(this,CountService.class);
 //        intent.putExtra("EXTRA","Some Stuff");
 //        startService(intent);
+        User user = new User("Test","a","b","c","d");
 
         Intent i = new Intent(this,CountIntentService.class);
+
+        i.putExtra("USER",user);
 
         startService(i);
 

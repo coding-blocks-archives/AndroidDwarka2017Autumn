@@ -28,6 +28,10 @@ public class CountIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+
+        User user = (User) intent.getSerializableExtra("USER");
+        intent.getParcelableExtra("USER");
+
         for (int i=0;i<1000000;i++){
             Log.e("TAG", "run: " + i);
         }
