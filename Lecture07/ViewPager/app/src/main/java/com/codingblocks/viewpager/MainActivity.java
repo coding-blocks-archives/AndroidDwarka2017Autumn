@@ -1,5 +1,6 @@
 package com.codingblocks.viewpager;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,21 +16,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         MyViewPagerAdapter myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager());
-
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         viewPager.setAdapter(myViewPagerAdapter);
+
+        tabLayout.setupWithViewPager(viewPager);
+
     }
 
-    class MyViewPagerAdapter extends FragmentPagerAdapter{
+    class MyViewPagerAdapter extends FragmentPagerAdapter {
 
         public MyViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
 
+            return "Tab " + position;
+
+        }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
+            switch (position) {
                 case 0:
                     return FragmentA.newInstance();
                 case 1:
