@@ -10,23 +10,32 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+
+import static android.view.View.GONE;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView textView;
+    Button b;
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = (TextView) findViewById(R.id.textView);
-        Button b = new Button(this);
+        b = new Button(this);
         b.setLayoutParams(new ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         b.setText("Download");
@@ -38,9 +47,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MyAsyncTask myAsyncTask = new MyAsyncTask();
-                myAsyncTask.execute("https://www.google.com");
+                myAsyncTask.execute("https://api.github.com/search/users?q=tom");
             }
         });
+
+    }
+
+    ArrayList<User> parseJson(String s) {
+
+        ArrayList<User> users = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(s);
+
+            JSONArray items = jsonObject.getJSONArray("items");
+
+            for (int i = 0; i < items.length(); i++) {
+
+                JSONObject currentItem = items.getJSONObject(i);
+
+                String id = currentItem.getString("id");
+                String score = currentItem.getString("score");
+                String login = currentItem.getString("login");
+                String url = currentItem.getString("html_url");
+
+                User user = new User(id,login,url,score);
+
+                users.add(user);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return users;
 
     }
 
@@ -100,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             return result;
         }
 
@@ -107,6 +147,12 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             textView.setText(s);
+
+            ArrayList<User> userArrayList = parseJson(s);
+
+
+
+            b.setVisibility(GONE);
         }
     }
 
