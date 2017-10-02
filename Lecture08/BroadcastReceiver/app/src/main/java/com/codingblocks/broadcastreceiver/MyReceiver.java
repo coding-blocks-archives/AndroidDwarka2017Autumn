@@ -1,6 +1,7 @@
 package com.codingblocks.broadcastreceiver;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,15 +25,22 @@ public class MyReceiver extends BroadcastReceiver {
             context.startActivity(intent1);
         } else if (intent.getAction().equals(Intent.ACTION_POWER_DISCONNECTED)) {
 
+            PendingIntent pi = PendingIntent.getActivity(context,
+                    123,
+                    new Intent(context, MainActivity.class),
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
             Notification notification = new NotificationCompat.Builder(context)
                     .setContentTitle("Hola")
                     .setContentText("Hi there, I'm a notification")
                     .setSmallIcon(R.mipmap.ic_launcher)
+                    .addAction(new NotificationCompat.Action(R.mipmap.ic_launcher_round,"Hello",pi))
+                    .setContentIntent(pi)
                     .build();
 
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
 
-            notificationManagerCompat.notify(123,notification);
+            notificationManagerCompat.notify(123, notification);
 
 //            notificationManagerCompat.cancel(123);
 
