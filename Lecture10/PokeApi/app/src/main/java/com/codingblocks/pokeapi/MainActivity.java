@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 final Pokemon pokemon = gson.fromJson(pokeResult,Pokemon.class);
 
+
+                //Run UI operations on the main thread since OKHTTP callbacks run on a separate thread
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
