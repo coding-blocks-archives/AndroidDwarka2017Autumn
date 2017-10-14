@@ -71,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 final Pokemon pokemon = gson.fromJson(pokeResult,Pokemon.class);
 
+                //Sending objects in Intents using GSON
+
+//                String data = gson.toJson(pokemon);
+
+//                Intent i = new Intent();
+
+//                i.putExtra("POKEMON",data);
+
+//                Pokemon pokemon1 = gson.fromJson(receivedData,Pokemon.class);
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

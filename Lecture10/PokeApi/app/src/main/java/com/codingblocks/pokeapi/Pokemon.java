@@ -1,5 +1,7 @@
 package com.codingblocks.pokeapi;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -7,18 +9,21 @@ import java.util.ArrayList;
  */
 public class Pokemon {
 
-    private String name,weight,height,id,base_experience;
+    private String name,weight,height,id;
+
+    @SerializedName("base_experience")
+    private String baseExperience;
 
     private Sprites sprites;
 
     ArrayList<Abilities> abilities;
 
-    public Pokemon(String name, String weight, String height, String id, String base_experience, Sprites sprites) {
+    public Pokemon(String name, String weight, String height, String id, String baseExperience, Sprites sprites) {
         this.name = name;
         this.weight = weight;
         this.height = height;
         this.id = id;
-        this.base_experience = base_experience;
+        this.baseExperience = baseExperience;
         this.sprites = sprites;
     }
 
@@ -54,12 +59,12 @@ public class Pokemon {
         this.id = id;
     }
 
-    public String getBase_experience() {
-        return base_experience;
+    public String getBaseExperience() {
+        return baseExperience;
     }
 
-    public void setBase_experience(String base_experience) {
-        this.base_experience = base_experience;
+    public void setBaseExperience(String baseExperience) {
+        this.baseExperience = baseExperience;
     }
 
     public Sprites getSprites() {
