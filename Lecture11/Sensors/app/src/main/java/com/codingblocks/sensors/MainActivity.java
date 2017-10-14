@@ -1,6 +1,7 @@
 package com.codingblocks.sensors;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -8,11 +9,16 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorEventListener2;
 import android.hardware.SensorManager;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.List;
+
+import static com.codingblocks.sensors.R.id.constraintLayout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,11 +32,69 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        //AlertDialog with button
+        final ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+
+        Button button = (Button) findViewById(R.id.alertBtn);
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-//        SensorManager sensorManager = (SensorManager) getSystemService("sensor");
+        final Sensor accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
 
-        final ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+        sensorEventListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                //Called when the value of sensor changes
+                float[] values = event.values;
+
+                Log.e(TAG, "onSensorChanged: X Axis " + values[0] );
+                Log.e(TAG, "onSensorChanged: Y Axis " + values[1] );
+                Log.e(TAG, "onSensorChanged: Z Axis " + values[2] );
+
+                int newX = (int) ((values[0] / 9.8) * 255);
+                int newY = (int) ((values[1] / 9.8) * 255);
+                int newZ = (int) ((values[2] / 9.8) * 255);
+
+                constraintLayout.setBackgroundColor(Color.rgb(newX,newY,newZ));
+
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                //Called when the accuracy of sensor changes
+            }
+        };
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Do you want to register Listener?")
+                        .setMessage("Please select your choice...")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sensorManager.registerListener(sensorEventListener,accelSensor,SensorManager.SENSOR_DELAY_NORMAL);
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                sensorManager.unregisterListener(sensorEventListener);
+                            }
+                        })
+                        .setCancelable(false)
+                        .create();
+
+                alertDialog.show();
+
+
+            }
+        });
+
+//        SensorManager sensorManager = (SensorManager) getSystemService("sensor");
 
         List<Sensor> sensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
 
@@ -57,29 +121,6 @@ public class MainActivity extends AppCompatActivity {
 //
 //        }
 
-        sensorEventListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                //Called when the value of sensor changes
-                float[] values = event.values;
-
-                Log.e(TAG, "onSensorChanged: X Axis " + values[0] );
-                Log.e(TAG, "onSensorChanged: Y Axis " + values[1] );
-                Log.e(TAG, "onSensorChanged: Z Axis " + values[2] );
-
-//                constraintLayout.setBackgroundColor(Color.rgb());
-
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                //Called when the accuracy of sensor changes
-            }
-        };
-
-        Sensor accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
-
-        sensorManager.registerListener(sensorEventListener,accelSensor,SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -87,6 +128,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         //Unregister the listener in onDestroy
-        sensorManager.unregisterListener(sensorEventListener);
     }
 }
