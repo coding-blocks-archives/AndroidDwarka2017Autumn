@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 //                i.putExtra("POKEMON",data);
 
 //                Pokemon pokemon1 = gson.fromJson(receivedData,Pokemon.class);
+
+                //Run UI operations on the main thread since OKHTTP callbacks run on a separate thread
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
